@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  proposals Proposal[]
+  customers Customer[]
+
+  @@map("users")
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  company   String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  proposals  Proposal[]
+
+  @@map("customers")
+}
+
+model Proposal {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("DRAFT") // DRAFT, SENT, VIEWED, SIGNED, REJECTED, EXPIRED
+  totalAmount Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  sections   ProposalSection[]
+  signatures Signature[]
+
+  @@map("proposals")
+}
+
+model ProposalSection {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@map("proposal_sections")
+}
+
+model Signature {
+  id        String   @id @default(cuid())
+  signedAt  DateTime @default(now())
+  signature String   // Base64 encoded signature
+  ipAddress String?
+  userAgent String?
+
+  // Relations
+  proposalId String
+  proposal   Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  @@map("signatures")
+}
+
