@@ -33,20 +33,48 @@ export default function TheresaPage() {
     }
 
     setMessages(prev => [...prev, userMessage])
+    const currentInput = input
     setInput('')
     setIsLoading(true)
 
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/theresa/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          context: 'proposal_assistance'
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to get response from Theresa')
+      }
+
+      const data = await response.json()
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "I'd be happy to help you with that! Let me analyze your request and provide some suggestions. Could you provide more details about the type of proposal you're working on?",
+        content: data.response,
         role: 'assistant',
         timestamp: new Date()
       }
+      
       setMessages(prev => [...prev, assistantMessage])
+    } catch (error) {
+      console.error('Error communicating with Theresa:', error)
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        content: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
+        role: 'assistant',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 1500)
+    }
   }
 
   return (

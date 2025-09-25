@@ -1,1 +1,5 @@
-{}
+{
+  "/api/customers/route": "app/api/customers/route.js",
+  "/api/theresa/chat/route": "app/api/theresa/chat/route.js",
+  "/api/proposals/generate/route": "app/api/proposals/generate/route.js"
+}
