@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Search, Edit, Trash2, Mail, Phone, Building, FileText } from 'lucide-react'
+import { Plus, Search, Edit, Trash2, Mail, Phone, Building, FileText, Star, Users } from 'lucide-react'
 import DashboardLayout from '../layout-dashboard'
 
 interface Customer {
@@ -93,9 +93,9 @@ export default function CustomersPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-6">
+      <div className="p-6 pt-0">
         {/* Header */}
-        <div className="mb-6 flex justify-between items-center">
+        <div className="mb-6 flex justify-between items-center pt-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
             <p className="text-gray-600">Manage your client relationships and track engagement.</p>

@@ -1,11 +1,14 @@
+'use client'
+
 import DashboardLayout from '../layout-dashboard'
+import { Download, Calendar, Plus } from 'lucide-react'
 
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <div className="p-6">
+      <div className="p-6 pt-0 -mt-4">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-6 pt-2">
           <h1 className="text-2xl font-bold text-gray-900">Enterprise Dashboard</h1>
           <p className="text-gray-600">Welcome back! Here's your comprehensive business overview.</p>
         </div>
@@ -19,13 +22,34 @@ export default function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="mb-8 flex items-center space-x-4">
-          <button className="bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center space-x-2">
-            <span>Export Data</span>
+          <button 
+            className="bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center space-x-2 transition-colors text-gray-700 hover:text-gray-900"
+            onClick={() => {
+              console.log('Export Data clicked');
+              alert('Export functionality will be implemented');
+            }}
+          >
+            <Download className="h-4 w-4 text-gray-600" />
+            <span className="font-medium">Export Data</span>
           </button>
-          <button className="bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center space-x-2">
-            <span>View Calendar</span>
+          <button 
+            className="bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 flex items-center space-x-2 transition-colors text-gray-700 hover:text-gray-900"
+            onClick={() => {
+              console.log('View Calendar clicked');
+              alert('Calendar functionality will be implemented');
+            }}
+          >
+            <Calendar className="h-4 w-4 text-gray-600" />
+            <span className="font-medium">View Calendar</span>
           </button>
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2">
+          <button 
+            className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2 transition-colors"
+            onClick={() => {
+              console.log('New Proposal clicked');
+              window.location.href = '/proposals/enhanced';
+            }}
+          >
+            <Plus className="h-4 w-4" />
             <span>New Proposal</span>
           </button>
         </div>

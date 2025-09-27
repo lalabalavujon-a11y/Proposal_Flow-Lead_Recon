@@ -43,7 +43,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 m-0 p-0">
       {/* Mobile sidebar */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
@@ -92,7 +92,7 @@ export default function DashboardLayout({
       {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200">
+          <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200 -mb-0">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <Link href="/dashboard" className="flex items-center">
@@ -122,17 +122,27 @@ export default function DashboardLayout({
               </nav>
             </div>
             <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3 w-full">
                 <div className="flex-shrink-0">
                   <User className="h-6 w-6 text-gray-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-700 truncate">Lead Recon Admin</p>
-                  <div className="flex items-center space-x-2">
-                    <Settings className="h-4 w-4 text-gray-400" />
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <span className="text-xs text-gray-500">user@leadrecon.com</span>
-                  </div>
+                  <p className="text-xs text-gray-500 truncate">settings@leadrecon.com</p>
+                </div>
+                <div className="flex-shrink-0">
+                  <button 
+                    className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded hover:bg-gray-100"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('Settings clicked');
+                      alert('Settings panel will be implemented');
+                    }}
+                    title="Settings"
+                    type="button"
+                  >
+                    <Settings className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -141,9 +151,9 @@ export default function DashboardLayout({
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64 flex flex-col flex-1">
+      <div className="lg:pl-64 flex flex-col flex-1 min-h-screen">
         {/* Top bar */}
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
+        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 -mt-0">
           <button
             type="button"
             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 lg:hidden"
@@ -166,28 +176,40 @@ export default function DashboardLayout({
                 </div>
               </div>
             </div>
-            <div className="ml-4 flex items-center md:ml-6">
+            <div className="ml-4 flex items-center md:ml-6 space-x-4 pr-4">
               <button
                 type="button"
-                className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 relative"
+                onClick={() => {
+                  console.log('Notifications clicked');
+                  alert('Notifications panel will be implemented');
+                }}
+                title="Notifications"
               >
                 <Bell className="h-6 w-6" />
-                <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+                <span className="absolute -top-1 -right-1 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
               </button>
-              <div className="ml-3 relative">
-                <div className="flex items-center space-x-2">
+              <div className="relative">
+                <button 
+                  className="flex items-center space-x-2 p-1 rounded-lg hover:bg-gray-100 transition-colors"
+                  onClick={() => {
+                    console.log('User menu clicked');
+                    alert('User menu will be implemented');
+                  }}
+                  title="User Menu"
+                >
                   <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
                     <User className="h-5 w-5 text-gray-600" />
                   </div>
                   <ChevronDown className="h-4 w-4 text-gray-400" />
-                </div>
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         {/* Page content */}
-        <main className="flex-1">
+        <main className="flex-1 -mt-0">
           {children}
         </main>
       </div>
