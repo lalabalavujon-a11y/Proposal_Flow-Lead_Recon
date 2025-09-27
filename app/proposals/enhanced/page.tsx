@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Bot, FileText, Users, Zap, Shield, CheckCircle, ArrowRight, Sparkles, User } from 'lucide-react'
+import DashboardLayout from '../../layout-dashboard'
 
 interface Customer {
   id: string
@@ -102,30 +103,19 @@ export default function EnhancedProposalsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <div className="relative">
-                <FileText className="h-8 w-8 text-primary-600" />
-                <div className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-              </div>
-              <h1 className="ml-2 text-2xl font-bold text-gray-900">Enhanced Proposals</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-5 w-5 text-green-500" />
-                <span className="text-sm text-green-600 font-medium">Theresa AI Active</span>
-              </div>
-            </div>
+    <DashboardLayout>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Enhanced Proposals</h1>
+            <p className="text-gray-600">Create professional proposals with Theresa AI assistance</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Bot className="h-5 w-5 text-green-500" />
+            <span className="text-sm text-green-600 font-medium">Theresa AI Active</span>
           </div>
         </div>
-      </header>
-
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
             <Sparkles className="h-8 w-8 text-yellow-500 mr-2" />
@@ -333,7 +323,7 @@ export default function EnhancedProposalsPage() {
             </p>
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { FileText, Download, Share, Edit, ArrowLeft, CheckCircle } from 'lucide-react'
+import DashboardLayout from '../../layout-dashboard'
 
 interface GeneratedProposal {
   title: string
@@ -60,71 +61,70 @@ export default function GeneratedProposalPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-      </div>
+      <DashboardLayout>
+        <div className="p-6 flex items-center justify-center h-96">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+        </div>
+      </DashboardLayout>
     )
   }
 
   if (!proposal) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No Proposal Found</h2>
-          <p className="text-gray-600 mb-4">No generated proposal was found in your session.</p>
-          <a
-            href="/proposals/enhanced"
-            className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
-          >
-            Generate New Proposal
-          </a>
+      <DashboardLayout>
+        <div className="p-6 flex items-center justify-center h-96">
+          <div className="text-center">
+            <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">No Proposal Found</h2>
+            <p className="text-gray-600 mb-4">No generated proposal was found in your session.</p>
+            <a
+              href="/proposals/enhanced"
+              className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
+            >
+              Generate New Proposal
+            </a>
+          </div>
         </div>
-      </div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <a
-                href="/proposals/enhanced"
-                className="flex items-center text-gray-600 hover:text-gray-900"
-              >
-                <ArrowLeft className="h-5 w-5 mr-2" />
-                Back to Generator
-              </a>
-              <div className="h-6 w-px bg-gray-300"></div>
-              <div className="flex items-center">
-                <FileText className="h-8 w-8 text-primary-600" />
-                <h1 className="ml-2 text-2xl font-bold text-gray-900">Generated Proposal</h1>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <button
-                onClick={handleShare}
-                className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                <Share className="h-4 w-4" />
-                <span>Share</span>
-              </button>
-              <button
-                onClick={handleDownload}
-                className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
-              >
-                <Download className="h-4 w-4" />
-                <span>Download</span>
-              </button>
+    <DashboardLayout>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <a
+              href="/proposals/enhanced"
+              className="flex items-center text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="h-5 w-5 mr-2" />
+              Back to Generator
+            </a>
+            <div className="h-6 w-px bg-gray-300"></div>
+            <div className="flex items-center">
+              <FileText className="h-8 w-8 text-primary-600" />
+              <h1 className="ml-2 text-2xl font-bold text-gray-900">Generated Proposal</h1>
             </div>
           </div>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={handleShare}
+              className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+            >
+              <Share className="h-4 w-4" />
+              <span>Share</span>
+            </button>
+            <button
+              onClick={handleDownload}
+              className="flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+            >
+              <Download className="h-4 w-4" />
+              <span>Download</span>
+            </button>
+          </div>
         </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Proposal Header */}
         <div className="bg-white rounded-lg shadow-sm border p-8 mb-8">
           <div className="flex items-start justify-between mb-6">
@@ -190,7 +190,7 @@ export default function GeneratedProposalPage() {
             <span>Download Proposal</span>
           </button>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

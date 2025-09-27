@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Plus, FileText, Eye, Edit, Trash2 } from 'lucide-react'
+import { Plus, FileText, Eye, Edit, Trash2, Search, Filter, Star } from 'lucide-react'
+import DashboardLayout from '../layout-dashboard'
 
 // Mock data - replace with actual data from database
 const mockProposals = [
@@ -43,136 +44,151 @@ const statusColors = {
 
 export default function ProposalsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <FileText className="h-8 w-8 text-primary-600" />
-              <h1 className="ml-2 text-2xl font-bold text-gray-900">Proposals</h1>
-            </div>
-            <Link
-              href="/proposals/new"
-              className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 flex items-center space-x-2"
-            >
-              <Plus className="h-4 w-4" />
-              <span>New Proposal</span>
-            </Link>
-          </div>
+    <DashboardLayout>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Proposals</h1>
+          <p className="text-gray-600">Manage your proposals and track their progress.</p>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats */}
+        {/* Search and Filter Bar */}
+        <div className="mb-6 flex items-center space-x-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search proposals..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            />
+          </div>
+          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <Filter className="h-4 w-4" />
+            <span>Filter</span>
+          </button>
+          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <option>Status: All</option>
+            <option>Draft</option>
+            <option>Sent</option>
+            <option>Viewed</option>
+            <option>Signed</option>
+          </select>
+        </div>
+
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-sm font-medium text-gray-500">Total Proposals</h3>
-            <p className="text-2xl font-bold text-gray-900">{mockProposals.length}</p>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <FileText className="h-6 w-6 text-blue-600" />
+              </div>
+              <div className="ml-4">
+                <h3 className="text-sm font-medium text-gray-500">Total Proposals</h3>
+                <p className="text-2xl font-bold text-gray-900">{mockProposals.length}</p>
+              </div>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-sm font-medium text-gray-500">Draft</h3>
-            <p className="text-2xl font-bold text-gray-900">
-              {mockProposals.filter(p => p.status === 'DRAFT').length}
-            </p>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <div className="h-6 w-6 bg-green-500 rounded-full"></div>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-sm font-medium text-gray-500">Active</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  {mockProposals.filter(p => p.status === 'SENT' || p.status === 'VIEWED').length}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-sm font-medium text-gray-500">Sent</h3>
-            <p className="text-2xl font-bold text-gray-900">
-              {mockProposals.filter(p => p.status === 'SENT').length}
-            </p>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center">
+              <div className="p-2 bg-yellow-100 rounded-lg">
+                <div className="h-6 w-6 bg-yellow-500 rounded-full"></div>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-sm font-medium text-gray-500">Draft</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  {mockProposals.filter(p => p.status === 'DRAFT').length}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-sm font-medium text-gray-500">Total Value</h3>
-            <p className="text-2xl font-bold text-gray-900">
-              ${mockProposals.reduce((sum, p) => sum + p.totalAmount, 0).toLocaleString()}
-            </p>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="flex items-center">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <div className="h-6 w-6 text-green-600 font-bold">$</div>
+              </div>
+              <div className="ml-4">
+                <h3 className="text-sm font-medium text-gray-500">Total Value</h3>
+                <p className="text-2xl font-bold text-gray-900">
+                  ${mockProposals.reduce((sum, p) => sum + p.totalAmount, 0).toLocaleString()}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Proposals Table */}
-        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Recent Proposals</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Proposal
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Amount
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Updated
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {mockProposals.map((proposal) => (
-                  <tr key={proposal.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {proposal.title}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          ID: {proposal.id}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        {/* Proposals List */}
+        <div className="space-y-4">
+          {mockProposals.map((proposal) => (
+            <div key={proposal.id} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <div className="flex-shrink-0">
+                    <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <FileText className="h-5 w-5 text-gray-600" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2">
+                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                        {proposal.title}
+                      </h3>
+                      {proposal.status === 'SENT' && (
+                        <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-500 truncate">
                       {proposal.customer}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[proposal.status as keyof typeof statusColors]}`}>
-                        {proposal.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-gray-900">
                       ${proposal.totalAmount.toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    </p>
+                    <p className="text-xs text-gray-500">
                       {new Date(proposal.updatedAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
-                        <Link
-                          href={`/proposals/${proposal.id}`}
-                          className="text-primary-600 hover:text-primary-900"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Link>
-                        <Link
-                          href={`/proposals/${proposal.id}/edit`}
-                          className="text-gray-600 hover:text-gray-900"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Link>
-                        <button className="text-red-600 hover:text-red-900">
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </p>
+                  </div>
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[proposal.status as keyof typeof statusColors]}`}>
+                    {proposal.status.toLowerCase()}
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <Link
+                      href={`/proposals/${proposal.id}`}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href={`/proposals/${proposal.id}/edit`}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Link>
+                    <button className="text-gray-400 hover:text-red-600">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

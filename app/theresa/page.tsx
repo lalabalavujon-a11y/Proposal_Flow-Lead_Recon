@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Bot, Send, MessageCircle, Sparkles } from 'lucide-react'
+import DashboardLayout from '../layout-dashboard'
 
 interface Message {
   id: string
@@ -78,25 +79,21 @@ export default function TheresaPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <Bot className="h-8 w-8 text-primary-600" />
-              <h1 className="ml-2 text-2xl font-bold text-gray-900">Theresa AI Assistant</h1>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Sparkles className="h-5 w-5 text-green-500" />
-              <span className="text-sm text-green-600 font-medium">Online</span>
-            </div>
+    <DashboardLayout>
+      <div className="p-6">
+        {/* Header */}
+        <div className="mb-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Theresa AI Assistant</h1>
+            <p className="text-gray-600">Your intelligent proposal assistant</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Sparkles className="h-5 w-5 text-green-500" />
+            <span className="text-sm text-green-600 font-medium">Online</span>
           </div>
         </div>
-      </header>
 
-      {/* Chat Interface */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Chat Interface */}
         <div className="bg-white rounded-lg shadow-sm border h-[600px] flex flex-col">
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -184,7 +181,7 @@ export default function TheresaPage() {
             </button>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }
