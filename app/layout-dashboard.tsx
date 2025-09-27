@@ -18,7 +18,7 @@ import {
   Settings,
   Mail
 } from 'lucide-react'
-import TheresaChatBubble from '../../components/TheresaChatBubble'
+// import TheresaChatBubble from '../../components/TheresaChatBubble'
 
 export default function DashboardLayout({
   children,
@@ -60,10 +60,10 @@ export default function DashboardLayout({
             </div>
             <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
               <div className="flex-shrink-0 flex items-center px-4">
-                <div className="flex items-center">
-                  <FileText className="h-8 w-8 text-primary-600" />
+                <Link href="/dashboard" className="flex items-center">
+                  <FileText className="h-8 w-8 text-yellow-500" />
                   <span className="ml-2 text-xl font-bold text-gray-900">ProposalFlow</span>
-                </div>
+                </Link>
               </div>
               <nav className="mt-5 px-2 space-y-1">
                 {navigation.map((item) => {
@@ -95,10 +95,10 @@ export default function DashboardLayout({
           <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
-                <div className="flex items-center">
-                  <FileText className="h-8 w-8 text-primary-600" />
+                <Link href="/dashboard" className="flex items-center">
+                  <FileText className="h-8 w-8 text-yellow-500" />
                   <span className="ml-2 text-xl font-bold text-gray-900">ProposalFlow</span>
-                </div>
+                </Link>
               </div>
               <div className="px-2 text-xs text-gray-500 mt-2">Powered by Lead Recon</div>
               <nav className="mt-5 flex-1 px-2 space-y-1">
@@ -193,7 +193,7 @@ export default function DashboardLayout({
       </div>
 
       {/* Theresa Chat Bubble */}
-      <TheresaChatBubble />
+      {/* <TheresaChatBubble /> */}
     </div>
   )
 }
