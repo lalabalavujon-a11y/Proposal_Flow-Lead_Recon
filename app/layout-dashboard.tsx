@@ -124,15 +124,19 @@ export default function DashboardLayout({
             <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
               <div className="flex items-center space-x-3 w-full">
                 <div className="flex-shrink-0">
-                  <User className="h-6 w-6 text-gray-400" />
+                  <div className="h-8 w-8 bg-gray-200 rounded-full flex items-center justify-center">
+                    <User className="h-5 w-5 text-gray-600" />
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0 space-y-1">
-                  <p className="text-sm font-medium text-gray-700 truncate leading-tight">Lead Recon Admin</p>
-                  <p className="text-xs text-gray-500 truncate leading-tight">settings@leadrecon.com</p>
+                <div className="flex-1 min-w-0">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-gray-700 truncate">Lead Recon Admin</p>
+                    <p className="text-xs text-gray-500 truncate">settings@leadrecon.com</p>
+                  </div>
                 </div>
-                <div className="flex-shrink-0 ml-2">
+                <div className="flex-shrink-0">
                   <button
-                    className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded hover:bg-gray-100"
+                    className="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-lg hover:bg-gray-100"
                     onClick={(e) => {
                       e.preventDefault();
                       console.log('Settings clicked');
