@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Search, Edit, Trash2, Mail, Phone, Building, FileText, Star, Users } from 'lucide-react'
-import DashboardLayout from '../layout-dashboard'
+import { Plus, Search, Edit, Trash2, Building, Star, Users, Bell, User, ChevronDown } from 'lucide-react'
 
 interface Customer {
   id: string
@@ -19,63 +18,50 @@ interface Customer {
   }>
 }
 
+// Mock data for demonstration
+const mockCustomers = [
+  {
+    id: '1',
+    name: 'Emily Davis',
+    email: 'emily@creativeagency.com',
+    company: 'Creative Agency',
+    phone: '+1 (555) 123-4567',
+    createdAt: '2024-01-15',
+    proposals: []
+  },
+  {
+    id: '2',
+    name: 'Mike Chen',
+    email: 'mike@startupio.com',
+    company: 'StartupIO',
+    phone: '+1 (555) 234-5678',
+    createdAt: '2024-01-10',
+    proposals: []
+  },
+  {
+    id: '3',
+    name: 'Sarah Johnson',
+    email: 'sarah@techcorp.com',
+    company: 'TechCorp Solutions',
+    phone: '+1 (555) 345-6789',
+    createdAt: '2024-01-05',
+    proposals: []
+  },
+  {
+    id: '4',
+    name: 'David Wilson',
+    email: 'david@digitalmedia.com',
+    company: 'Digital Media Inc',
+    phone: '+1 (555) 456-7890',
+    createdAt: '2024-01-01',
+    proposals: []
+  }
+]
+
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState<Customer[]>([])
-  const [loading, setLoading] = useState(true)
+  const [customers, setCustomers] = useState<Customer[]>(mockCustomers)
   const [searchTerm, setSearchTerm] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
-  const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
-
-  useEffect(() => {
-    fetchCustomers()
-  }, [])
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await fetch('/api/customers')
-      const data = await response.json()
-      setCustomers(data.customers || [])
-    } catch (error) {
-      console.error('Error fetching customers:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleAddCustomer = async (customerData: Omit<Customer, 'id' | 'createdAt' | 'proposals'>) => {
-    try {
-      const response = await fetch('/api/customers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(customerData),
-      })
-
-      if (response.ok) {
-        await fetchCustomers()
-        setShowAddForm(false)
-      }
-    } catch (error) {
-      console.error('Error adding customer:', error)
-    }
-  }
-
-  const handleDeleteCustomer = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this customer?')) return
-
-    try {
-      const response = await fetch(`/api/customers/${id}`, {
-        method: 'DELETE',
-      })
-
-      if (response.ok) {
-        await fetchCustomers()
-      }
-    } catch (error) {
-      console.error('Error deleting customer:', error)
-    }
-  }
 
   const filteredCustomers = customers.filter(customer =>
     customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -83,53 +69,107 @@ export default function CustomersPage() {
     (customer.company && customer.company.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
-      </div>
-    )
+  const handleAddCustomer = (customerData: Omit<Customer, 'id' | 'createdAt' | 'proposals'>) => {
+    const newCustomer: Customer = {
+      ...customerData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+      proposals: []
+    }
+    setCustomers([...customers, newCustomer])
+    setShowAddForm(false)
+  }
+
+  const handleDeleteCustomer = (id: string) => {
+    if (!confirm('Are you sure you want to delete this customer?')) return
+    setCustomers(customers.filter(c => c.id !== id))
   }
 
   return (
-    <DashboardLayout>
-      <div className="p-6 pt-0">
-        {/* Header */}
-        <div className="mb-6 flex justify-between items-center pt-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
-            <p className="text-gray-600">Manage your client relationships and track engagement.</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation Bar */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <Building className="h-8 w-8 text-yellow-500" />
+                <span className="ml-2 text-xl font-bold text-gray-900">ProposalFlow</span>
+              </div>
+              <div className="text-xs text-gray-500">Powered by Lead Recon</div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  className="block w-80 pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  placeholder="Search clients, proposals..."
+                  type="search"
+                />
+              </div>
+              
+              <button className="p-2 text-gray-400 hover:text-gray-600 relative">
+                <Bell className="h-6 w-6" />
+                <span className="absolute -top-1 -right-1 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+              </button>
+              
+              <div className="flex items-center space-x-2">
+                <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-gray-600" />
+                </div>
+                <ChevronDown className="h-4 w-4 text-gray-400" />
+              </div>
+            </div>
           </div>
-          <button
-            onClick={() => setShowAddForm(true)}
-            className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Add Client</span>
-          </button>
         </div>
-        {/* Search and Filter */}
-        <div className="mb-6 flex items-center space-x-4">
-          <div className="flex-1 relative">
+      </div>
+
+      {/* Main Content */}
+      <div className="px-6 py-6">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Clients</h1>
+              <p className="text-gray-600 mt-2">Manage your client relationships and track engagement.</p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <Search className="h-4 w-4" />
+                <span>Filter</span>
+              </button>
+              <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <option>Status: All</option>
+                <option>Active</option>
+                <option>Prospect</option>
+                <option>Inactive</option>
+              </select>
+              <button
+                onClick={() => setShowAddForm(true)}
+                className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2 transition-colors shadow-sm"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="font-semibold">Add Client</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search clients..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             />
           </div>
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-            <Search className="h-4 w-4" />
-            <span>Filter</span>
-          </button>
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-            <option>Status: All</option>
-            <option>Active</option>
-            <option>Prospect</option>
-            <option>Inactive</option>
-          </select>
         </div>
 
         {/* Stats Cards */}
@@ -183,17 +223,17 @@ export default function CustomersPage() {
         {/* Customers List */}
         <div className="space-y-4">
           {filteredCustomers.map((customer) => (
-            <div key={customer.id} className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+            <div key={customer.id} className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
-                    <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Building className="h-5 w-5 text-gray-600" />
+                    <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                      <Building className="h-6 w-6 text-gray-600" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
+                      <h3 className="text-lg font-medium text-gray-900 truncate">
                         {customer.name}
                       </h3>
                       <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
@@ -204,33 +244,37 @@ export default function CustomersPage() {
                     <p className="text-sm text-gray-500 truncate">
                       {customer.company || customer.email}
                     </p>
+                    <p className="text-xs text-gray-400">
+                      {customer.phone}
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-6">
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">Revenue</p>
-                    <p className="text-xs text-gray-500">$45,000</p>
+                    <p className="text-lg font-semibold text-gray-900">$45,000</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">Proposals</p>
-                    <p className="text-xs text-gray-500">{customer.proposals.length}</p>
+                    <p className="text-lg font-semibold text-gray-900">{customer.proposals.length}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-gray-900">Last activity</p>
-                    <p className="text-xs text-gray-500">2 hours ago</p>
+                    <p className="text-lg font-semibold text-gray-900">2 hours ago</p>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-3">
                     <button
-                      onClick={() => setEditingCustomer(customer)}
-                      className="text-gray-400 hover:text-gray-600"
+                      className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50"
+                      title="Edit"
                     >
-                      <Edit className="h-4 w-4" />
+                      <Edit className="h-5 w-5" />
                     </button>
                     <button
                       onClick={() => handleDeleteCustomer(customer.id)}
-                      className="text-gray-400 hover:text-red-600"
+                      className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50"
+                      title="Delete"
                     >
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className="h-5 w-5" />
                     </button>
                   </div>
                 </div>
@@ -251,7 +295,7 @@ export default function CustomersPage() {
             {!searchTerm && (
               <button
                 onClick={() => setShowAddForm(true)}
-                className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700"
+                className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
               >
                 Add Customer
               </button>
@@ -267,20 +311,7 @@ export default function CustomersPage() {
           onSave={handleAddCustomer}
         />
       )}
-
-      {/* Edit Customer Modal */}
-      {editingCustomer && (
-        <EditCustomerModal
-          customer={editingCustomer}
-          onClose={() => setEditingCustomer(null)}
-          onSave={async (data) => {
-            // Handle update logic here
-            setEditingCustomer(null)
-            await fetchCustomers()
-          }}
-        />
-      )}
-    </DashboardLayout>
+    </div>
   )
 }
 
@@ -315,7 +346,7 @@ function AddCustomerModal({ onClose, onSave }: {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
           <div>
@@ -325,7 +356,7 @@ function AddCustomerModal({ onClose, onSave }: {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
           <div>
@@ -334,7 +365,7 @@ function AddCustomerModal({ onClose, onSave }: {
               type="text"
               value={formData.company}
               onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
           <div>
@@ -343,97 +374,15 @@ function AddCustomerModal({ onClose, onSave }: {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             />
           </div>
           <div className="flex space-x-3 pt-4">
             <button
               type="submit"
-              className="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700"
+              className="flex-1 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600"
             >
               Add Customer
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
-}
-
-// Edit Customer Modal Component
-function EditCustomerModal({ customer, onClose, onSave }: {
-  customer: Customer
-  onClose: () => void
-  onSave: (data: any) => void
-}) {
-  const [formData, setFormData] = useState({
-    name: customer.name,
-    email: customer.email,
-    company: customer.company || '',
-    phone: customer.phone || ''
-  })
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSave(formData)
-  }
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-xl font-semibold mb-4">Edit Customer</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-            <input
-              type="text"
-              value={formData.company}
-              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500"
-            />
-          </div>
-          <div className="flex space-x-3 pt-4">
-            <button
-              type="submit"
-              className="flex-1 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700"
-            >
-              Update Customer
             </button>
             <button
               type="button"

@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import DashboardLayout from '../layout-dashboard'
-import { Plus, Play, Pause, Edit, Trash2, Search, Filter, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { Plus, Play, Pause, Edit, Trash2, Search, Filter, Clock, CheckCircle, AlertCircle, Bell, User, ChevronDown, Sparkles } from 'lucide-react'
 
 // Mock workflow data
 const mockWorkflows = [
@@ -79,48 +78,94 @@ export default function WorkflowsPage() {
   }
 
   return (
-    <DashboardLayout>
-      <div className="p-6 pt-0">
-        {/* Header */}
-        <div className="mb-6 pt-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Workflows</h1>
-            <p className="text-gray-600">Automate your business processes and streamline operations.</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation Bar */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center">
+                <Sparkles className="h-8 w-8 text-yellow-500" />
+                <span className="ml-2 text-xl font-bold text-gray-900">ProposalFlow</span>
+              </div>
+              <div className="text-xs text-gray-500">Powered by Lead Recon</div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  className="block w-80 pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                  placeholder="Search clients, proposals..."
+                  type="search"
+                />
+              </div>
+              
+              <button className="p-2 text-gray-400 hover:text-gray-600 relative">
+                <Bell className="h-6 w-6" />
+                <span className="absolute -top-1 -right-1 block h-2 w-2 rounded-full bg-red-400 ring-2 ring-white"></span>
+              </button>
+              
+              <div className="flex items-center space-x-2">
+                <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-gray-600" />
+                </div>
+                <ChevronDown className="h-4 w-4 text-gray-400" />
+              </div>
+            </div>
           </div>
-          <button
-            onClick={() => {
-              console.log('New workflow clicked');
-              alert('New workflow creation will be implemented');
-            }}
-            className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2"
-          >
-            <Plus className="h-4 w-4" />
-            <span>New Workflow</span>
-          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="px-6 py-6">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Workflows</h1>
+              <p className="text-gray-600 mt-2">Automate your business processes and streamline operations.</p>
+            </div>
+            <div className="flex items-center space-x-3">
+              <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+                <Filter className="h-4 w-4" />
+                <span>Filter</span>
+              </button>
+              <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <option>Status: All</option>
+                <option>Active</option>
+                <option>Paused</option>
+                <option>Draft</option>
+              </select>
+              <button
+                onClick={() => {
+                  console.log('New workflow clicked');
+                  // Implement actual workflow creation
+                  window.location.href = '/workflows/new';
+                }}
+                className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 flex items-center space-x-2 transition-colors shadow-sm"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="font-semibold">New Workflow</span>
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Search and Filter */}
-        <div className="mb-6 flex items-center space-x-4">
-          <div className="flex-1 relative">
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search workflows..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
             />
           </div>
-          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-            <Filter className="h-4 w-4" />
-            <span>Filter</span>
-          </button>
-          <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-            <option>Status: All</option>
-            <option>Active</option>
-            <option>Paused</option>
-            <option>Draft</option>
-          </select>
         </div>
 
         {/* Stats Cards */}
@@ -209,10 +254,10 @@ export default function WorkflowsPage() {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <button
                     onClick={() => toggleWorkflowStatus(workflow.id)}
-                    className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       workflow.status === 'ACTIVE' 
                         ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' 
                         : 'bg-green-100 text-green-800 hover:bg-green-200'
@@ -220,11 +265,11 @@ export default function WorkflowsPage() {
                   >
                     {workflow.status === 'ACTIVE' ? 'Pause' : 'Start'}
                   </button>
-                  <button className="text-gray-400 hover:text-gray-600 p-1">
-                    <Edit className="h-4 w-4" />
+                  <button className="text-gray-400 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50" title="Edit">
+                    <Edit className="h-5 w-5" />
                   </button>
-                  <button className="text-gray-400 hover:text-red-600 p-1">
-                    <Trash2 className="h-4 w-4" />
+                  <button className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50" title="Delete">
+                    <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
               </div>
@@ -245,7 +290,7 @@ export default function WorkflowsPage() {
               <button
                 onClick={() => {
                   console.log('Create workflow clicked');
-                  alert('Workflow creation will be implemented');
+                  window.location.href = '/workflows/new';
                 }}
                 className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
               >
@@ -255,6 +300,6 @@ export default function WorkflowsPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </div>
   )
 }
