@@ -43,7 +43,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 m-0 p-0">
+    <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
@@ -92,7 +92,7 @@ export default function DashboardLayout({
       {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200 -mb-0">
+            <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <Link href="/dashboard" className="flex items-center">
@@ -126,12 +126,12 @@ export default function DashboardLayout({
                 <div className="flex-shrink-0">
                   <User className="h-6 w-6 text-gray-400" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-700 truncate">Lead Recon Admin</p>
-                  <p className="text-xs text-gray-500 truncate">settings@leadrecon.com</p>
+                <div className="flex-1 min-w-0 space-y-1">
+                  <p className="text-sm font-medium text-gray-700 truncate leading-tight">Lead Recon Admin</p>
+                  <p className="text-xs text-gray-500 truncate leading-tight">settings@leadrecon.com</p>
                 </div>
-                <div className="flex-shrink-0">
-                  <button 
+                <div className="flex-shrink-0 ml-2">
+                  <button
                     className="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded hover:bg-gray-100"
                     onClick={(e) => {
                       e.preventDefault();
@@ -153,7 +153,7 @@ export default function DashboardLayout({
       {/* Main content */}
       <div className="lg:pl-64 flex flex-col flex-1 min-h-screen">
         {/* Top bar */}
-        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 -mt-0">
+        <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200">
           <button
             type="button"
             className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 lg:hidden"
@@ -209,7 +209,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 -mt-0">
+        <main className="flex-1">
           {children}
         </main>
       </div>
